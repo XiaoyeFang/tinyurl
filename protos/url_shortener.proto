@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package protos;
+
+// for grpc-gateway
+//#gw#import "google/api/annotations.proto";
+
+service UrlShortEnerService {
+    //短链接生成
+    rpc ShortenerGenerate (GenerateRequest) returns (GenerateReply) {
+        //#gw#  option (google.api.http) = {
+        //#gw#  post: "/v1/url_shortener/shortener_generate"
+        //#gw#  body: "*"
+        //#gw#  };
+
+    }
+
+    //筛选查询
+    rpc ShortenerQuery (QueryRequest) returns (QueryReply) {
+        //#gw#  option (google.api.http) = {
+        //#gw#  post: "/v1/url_shortener/shortener_query"
+        //#gw#  body: "*"
+        //#gw#  };
+
+    }
+    //删除
+    rpc ShortenerDelete (DelEnerRequest) returns (DelEnerReply) {
+        //#gw#  option (google.api.http) = {
+        //#gw#  post: "/v1/url_shortener/shortener_delete"
+        //#gw#  body: "*"
+        //#gw#  };
+
+    }
+
+}
+
+message GenerateRequest {
+    string pcurl = 1;
+    string mobileUrl = 2;
+    string mobileClientUrl = 3;
+}
+
+message GenerateReply {
+    string shortener = 1;
+    string clientType = 2;
+}
+
+message ShortDetailReply {
+    // 唯一Id
+    string uid = 1;
+    // shortener 短链接
+    string shortener = 2;
+    // clientType 客户端类型
+    string clientType = 3;
+    // url 原url
+    string url = 4;
+    //creatTime 创建时间
+    string createTime = 5;
+
+}
+message QueryRequest {
+    // url 原url
+    string url = 1;
+    // shortener 短链接
+    string shortener = 2;
+    // 页码
+    int32 page = 3;
+    //每页显示数目
+    int32 pageSize = 4;
+}
+
+message QueryReply {
+    //Shortener 详情
+    repeated ShortDetailReply appInfoList = 1;
+    //apk  总数
+    int32 count = 2;
+}
+
+message DelEnerRequest {
+    // url 原url
+    string url = 1;
+    // shortener 短链接
+    string shortener = 2;
+}
+message DelEnerReply {
+    // result 删除结果
+    string result = 1;
+
+}
